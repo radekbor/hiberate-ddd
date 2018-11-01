@@ -14,6 +14,21 @@ public class House {
     private Integer buildingNumber;
     private Integer subNumber;
 
+    private House() {
+        // For Hibernate
+    }
+
+    public House(Integer id, String city, String street, Integer buildingNumber, Integer subNumber) {
+        this.id = id;
+        this.city = city;
+        this.street = street;
+        this.buildingNumber = buildingNumber;
+        this.subNumber = subNumber;
+    }
+
+    public House(Integer id, String city, String street, Integer buildingNumber) {
+        this(id, city, street, buildingNumber, null);
+    }
 
     public Integer getId() {
         return id;
