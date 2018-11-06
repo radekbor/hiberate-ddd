@@ -2,9 +2,14 @@ package org.radekbor.ddddb;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.Range;
+
+import javax.validation.constraints.Min;
 
 public class HouseRequest {
 
+    @Length(min = 3)
     private String city;
     private String street;
     private Integer buildingNumber;

@@ -3,8 +3,10 @@ package org.radekbor.ddddb;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -20,7 +22,7 @@ public class HousesResource {
     private HouseRepository houseRepository;
 
     @PostMapping(value = "/house")
-    public void createHouse(@RequestBody HouseRequest houseRequest) {
+    public void createHouse(@Valid @RequestBody HouseRequest houseRequest) {
         log.info(houseRequest.toString());
     }
 

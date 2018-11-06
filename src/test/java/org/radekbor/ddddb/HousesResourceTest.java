@@ -1,6 +1,9 @@
 package org.radekbor.ddddb;
 
 import io.restassured.http.ContentType;
+import io.restassured.response.ValidatableResponse;
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
@@ -12,9 +15,6 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static io.restassured.RestAssured.given;
-import static io.restassured.RestAssured.when;
-import static io.restassured.RestAssured.with;
-import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -27,22 +27,36 @@ public class HousesResourceTest {
 
     @Test
     public void shouldBeAbleToSendWhenNoSetters() throws JSONException {
+        JSONObject jsonObject = createHouseRequest(1, "London");
 
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("city", "London");
-        jsonObject.put("street", "HighStreet");
-        jsonObject.put("buildingNumber", 1);
-        jsonObject.put("subNumber", 25);
+        sendHouseRequest(jsonObject)
+                .statusCode(200);
+    }
 
-        log.info(jsonObject.toString());
+    @Test
+    public void shouldNotBeAbleToSendWhenNoSettersAndInvalidCity() throws JSONException {
+        JSONObject jsonObject = createHouseRequest(1, "X");
 
-        given().port(port).with()
+        sendHouseRequest(jsonObject)
+                .statusCode(400);
+    }
+
+    private ValidatableResponse sendHouseRequest(JSONObject jsonObject) {
+        log.info("House Request:" + jsonObject.toString());
+        return given().port(port).with()
                 .body(jsonObject.toString())
                 .contentType(ContentType.JSON)
                 .post("house")
-                .then()
-                .statusCode(200);
-
-
+                .then();
     }
+
+    private JSONObject createHouseRequest(int buildingNumber, String city) throws JSONException {
+        return new JSONObject()
+                .put("city", city)
+                .put("street", "HighStreet")
+                .put("buildingNumber", buildingNumber)
+                .put("subNumber", 25);
+    }
+
+
 }
