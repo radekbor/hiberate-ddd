@@ -2,8 +2,6 @@ package org.radekbor.ddddb;
 
 import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
